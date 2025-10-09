@@ -1,4 +1,5 @@
 #include "include/lab1.h"
+#include <stdio.h>
 
 int main(int count, char *args[]){
     if (count != 3){
