@@ -1,5 +1,5 @@
-#include "../include/lab1.h"
-
+#include "lab1.h"
+#include <stdio.h>
 
 void Multiple(int x){
     int count = 0;
@@ -65,12 +65,17 @@ void ConvertToHex(int x){
 }
 
 
-uint64_t power(int x, int n){
-    uint64_t s = x;
-    for (int i = 1; i < n; i++)
-        s *= x;
-    return s;
+uint64_t power(int x, int n) {
+    if (n < 0) return 0;
+    if (n == 0) return 1;
+    uint64_t res = 1;
+    uint64_t base = x;
+    for (int i = 0; i < n; i++) {
+        res *= base;
+    }
+    return res;
 }
+
 void Degree(int x){
     printf("%7c",'|');
     for(int i = 1; i <= x; i++){

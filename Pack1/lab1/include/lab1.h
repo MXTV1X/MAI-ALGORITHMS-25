@@ -10,6 +10,7 @@
 
 
 typedef enum {
+    SUCCESS,
     INCORRECT_INPUT,
     OVERFLOW,
     NEGATIVE_NUMBER,
