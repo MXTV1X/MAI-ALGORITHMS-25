@@ -1,5 +1,5 @@
-#ifndef _LAB1
-#define _LAB1
+#ifndef _LAB1_1
+#define _LAB1_1
 
 #include <limits.h>
 #include <stdbool.h>

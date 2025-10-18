@@ -67,7 +67,7 @@ void ConvertToHex(int x){
 
 uint64_t power(int x, int n){
     uint64_t s = x;
-    for (int i = 1; i <= n; i++)
+    for (int i = 1; i < n; i++)
         s *= x;
     return s;
 }
@@ -77,15 +77,13 @@ void Degree(int x){
         printf("%11d| ", i);
     }
     printf("\n");
+    
     if (1 <= x && x <= 10){
         for (int i = 1; i <= 10; i++){
-            int c = 1;
             printf("%6d|", i);
-            printf("%11d| ", i);
-
-            for (int j = 2; j <= x; j++){
-                printf("%11lu| ", power(i, c));
-                c++;
+            
+            for (int j = 1; j <= x; j++){
+                printf("%11lu| ", power(i, j));
             }
             printf("\n");
         }
