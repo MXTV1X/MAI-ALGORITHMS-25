@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "lab7.h" // Подключаем наш заголовочный файл
+#include "lab7.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {

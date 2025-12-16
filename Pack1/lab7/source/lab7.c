@@ -45,7 +45,6 @@ long long convert_to_decimal(const char *s, int base) {
     int value;
     int len = strlen(s);
 
-    // Перебор строки справа налево
     for (int i = len - 1; i >= 0; i--) {
         value = char_to_value(s[i]);
         
@@ -53,21 +52,17 @@ long long convert_to_decimal(const char *s, int base) {
             return -1; 
         }
         
-        // 1. Проверка переполнения при умножении (value * power_of_base)
-        // В данном случае, term будет всегда положительным или нулем.
         if (power_of_base > 0 && value > LLONG_MAX / power_of_base) {
              return -1; 
         }
         long long term = value * power_of_base;
 
-        // 2. Проверка переполнения при сложении (result + term)
         if (result > LLONG_MAX - term) {
              return -1; 
         }
         result += term;
         
         if (i > 0) {
-             // 3. Проверка переполнения при расчете следующей степени (power_of_base * base)
              if (power_of_base > LLONG_MAX / base) {
                  return -1; 
              }

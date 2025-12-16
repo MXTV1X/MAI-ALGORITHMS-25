@@ -53,9 +53,7 @@ char* count_rare_symbols(const char* buff, char* res) {
 char* replace_except_digits(const char* buff, char* res) {
     size_t pos = 0;
     for (int i = 0; buff[i] != 0; ++i) {
-        /*if (buff[i] == '\n') {
-            pos += snprintf(res + pos, BUFFER_SIZE, "%0x\n", buff[i]);
-        } else */if (!isdigit(buff[i])) {
+        if (!isdigit(buff[i])) {
             pos += snprintf(res + pos, BUFFER_SIZE, "%0x", buff[i]);
         } else {
             res[pos++] = buff[i];

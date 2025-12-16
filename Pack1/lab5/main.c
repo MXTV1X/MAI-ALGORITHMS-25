@@ -25,7 +25,6 @@ int main(const int argc, const char* argv[]) {
         current_flag[flag_len - 1] = 0;
     }
     else {
-        // для snprintf добавляем +1 к длине тк контролируется постановление терминирующего нуля
         snprintf(file_out, strlen(file_in) + 5, "out_%s", file_in);
         snprintf(current_flag, flag_len + 1, "%s", flag);
     }
