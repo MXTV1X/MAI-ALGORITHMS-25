@@ -1,17 +1,20 @@
-#ifndef _LAB1_5
-#define _LAB1_5
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define MAX_LEN 50
-#define BUFFER_SIZE 1024
+#define NAME_FILE 256
 
-#define IS_FLAG(a, b) strcmp(a, b) == 0
+typedef enum{
+    SUCCESS = 0,
+    BAD_INP,
+    OPEN_ERR,
+    ALLOC_ERR
+}Code;
 
-char* remove_arabic_digits(const char* buff, char* res);
-
-char* count_latin_letters(const char* buff, char* res);
-
-char* count_rare_symbols(const char* buff, char* res);
-
-char* replace_except_digits(const char* buff, char* res);
-
-#endif
+int is_latin_letter(char c);
+int is_arabic_digit(char c);
+int is_space(char c);
+void process_d_flag(FILE *input, FILE *output);
+void process_i_flag(FILE *input, FILE *output);
+void process_s_flag(FILE *input, FILE *output);
+void process_a_flag(FILE *input, FILE *output);

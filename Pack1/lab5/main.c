@@ -1,72 +1,97 @@
 #include "lab5.h"
 
-#include <stdio.h>
-#include <string.h>
 
-int main(const int argc, const char* argv[]) {
+
+int main(int argc, char *argv[]) {
     if (argc < 3) {
-        printf("Not enough arguments\n");
-        return 1;
+        printf("Использование: %s <флаг> <входной_файл> [выходной_файл]\n", argv[0]);
+        return BAD_INP;
     }
-    const char* flag = argv[1];
-    const char* file_in = argv[2];
 
-    char current_flag[MAX_LEN], file_out[MAX_LEN];
-    size_t flag_len = strlen(flag);
-    if (flag_len > 2) {
-        const char* current_file = argv[3];
-        snprintf(file_out, strlen(current_file) + 1, "%s", current_file);
-        size_t pos = 0;
-        for (int i = 0; i < flag_len; ++i) {
-            if (flag[i] != 'n') {
-                current_flag[pos++] = flag[i];
-            }
+    char *flag = argv[1];
+    char *input_filename = argv[2];
+    char output_filename[NAME_FILE];
+    char *provided_output = NULL;
+    
+    if ((flag[0] != '-' && flag[0] != '/') || strlen(flag) < 2 || strlen(flag) > 3) {
+        printf("Некорректный флаг: %s\n", flag);
+        return BAD_INP;
+    }
+    if (flag[1] == 'n' && argc >= 4) {
+        provided_output = argv[3];
+    }
+
+    if (provided_output != NULL) {
+        strncpy(output_filename, provided_output, NAME_FILE);
+    } else {
+        const char *prefix = "out_";
+        size_t total_len = strlen(prefix) + strlen(input_filename);
+        if (total_len >= NAME_FILE) {
+            printf("Ошибка: сгенерированное имя файла слишком длинное\n");
+            return BAD_INP;
         }
-        current_flag[flag_len - 1] = 0;
+        
+        strcpy(output_filename, prefix);
+        strcat(output_filename, input_filename);
     }
-    else {
-        snprintf(file_out, strlen(file_in) + 5, "out_%s", file_in);
-        snprintf(current_flag, flag_len + 1, "%s", flag);
-    }
-    FILE* input = fopen(file_in, "r");
+    
+    FILE *input = fopen(input_filename, "r");
     if (!input) {
-        printf("Error open %s in read mode\n", file_in);
-        return 1;
+        printf("Не удалось открыть входной файл: %s\n", input_filename);
+        return OPEN_ERR;
     }
-    FILE* output = fopen(file_out, "w");
+    
+    FILE *output = fopen(output_filename, "w");
     if (!output) {
-        printf("Error open %s in write mode\n", file_out);
-        return 1;
+        printf("Не удалось создать выходной файл: %s\n", output_filename);
+        fclose(input);
+        return OPEN_ERR;
     }
-    char buff[BUFFER_SIZE];
-    size_t n = fread(buff, sizeof(char), BUFFER_SIZE, input);
-    if (!feof(input)) {
-        printf("Error reading from %s in read mode\n", file_in);
-        return 1;
+    
+    char operation = flag[1];
+    
+    if (flag[1] == 'n') {
+        if (strlen(flag) != 3) {
+            printf("Некорректный флаг: %s\n", flag);
+            return BAD_INP;
+        }
+        operation = flag[2];  
+        if (strchr("disa", operation) == NULL) {
+            printf("Неизвестная операция: %c\n", operation);
+            return BAD_INP;
+        }
+    } else {
+        if (strlen(flag) != 2) {
+            printf("Некорректный флаг: %s\n", flag);
+            return BAD_INP;
+        }
+        operation = flag[1]; 
     }
-    buff[n] = 0;
-    char answer[BUFFER_SIZE];
-    if (IS_FLAG(current_flag, "-d") || IS_FLAG(current_flag, "/d")) {
-        remove_arabic_digits(buff, answer);
-        fwrite(answer, sizeof(char), strlen(answer), output);
+    
+    switch (operation) {
+        case 'd':
+            process_d_flag(input, output);
+            break;
+        case 'i':
+            process_i_flag(input, output);
+            break;
+        case 's':
+            process_s_flag(input, output);
+            break;
+        case 'a':
+            process_a_flag(input, output);
+            break;
+        default:
+            printf("Неизвестный флаг: %c\n", operation);
+            fclose(input);
+            fclose(output);
+            return BAD_INP;
     }
-    else if (IS_FLAG(current_flag, "-i") || IS_FLAG(current_flag, "/i")) {
-        count_latin_letters(buff, answer);
-        fwrite(answer, sizeof(char), strlen(answer), output);
-    }
-    else if (IS_FLAG(current_flag, "-s") || IS_FLAG(current_flag, "/s")) {
-        count_rare_symbols(buff, answer);
-        fwrite(answer, sizeof(char), strlen(answer), output);
-    }
-    else if (IS_FLAG(current_flag, "-a") || IS_FLAG(current_flag, "/a")) {
-        replace_except_digits(buff, answer);
-        fwrite(answer, sizeof(char), strlen(answer), output);
-    }
-    else {
-        printf("Unknown flag: %s\n", current_flag);
-        return 1;
-    }
+    
+    
     fclose(input);
     fclose(output);
-    return 0;
+    
+    printf("Обработка завершена. Результат в файле: %s\n", output_filename);
+    return SUCCESS;
 }
