@@ -3,15 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-
-typedef enum {
-    SUCCESS,
-    INCORRECT_INPUT,
-    INCORRECT_EPS
-} BadType;
-
-#include <stdlib.h>
 
 #define MAX_BASE 36
 #define MAX_TOKEN_LEN 256

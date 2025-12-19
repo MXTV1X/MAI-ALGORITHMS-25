@@ -1,7 +1,7 @@
 #include "lab7.h"
-#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <limits.h>
 
 int char_to_value(char c) {
     if (isdigit(c)) {
