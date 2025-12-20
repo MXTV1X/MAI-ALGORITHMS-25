@@ -1,4 +1,6 @@
 #include "lab5.h"
+#include <sys/stat.h>
+#include <unistd.h>
 
 int is_latin_letter(char c) {
     return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
@@ -134,4 +136,18 @@ void process_a_flag(FILE *input, FILE *output) {
             fprintf(output, "%02X", (unsigned char)ch);
         }
     }
+}
+
+int are_same_file(const char* file1, const char* file2) {
+    struct stat stat1, stat2;
+    
+    if (stat(file1, &stat1) != 0) {
+        return 0;
+    }
+    
+    if (stat(file2, &stat2) != 0) {
+        return 0;
+    }
+    
+    return (stat1.st_dev == stat2.st_dev) && (stat1.st_ino == stat2.st_ino);
 }

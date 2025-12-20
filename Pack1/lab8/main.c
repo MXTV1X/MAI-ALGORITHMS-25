@@ -2,9 +2,23 @@
 
 int main() {
     int base;
+    
     printf("Введите основание системы счисления (2-36): ");
-    if (scanf("%d", &base) != 1 || base < 2 || base > 36) {
+    
+    char input[100];
+    if (scanf("%99s", input) != 1) {
         printf("Ошибка: некорректное основание.\n");
+        return 1;
+    }
+    
+    int len = strlen(input);
+    if (len < 1 || len > 2) {
+        printf("Ошибка: основание должно быть от 2 до 36.\n");
+        return 1;
+    }
+    
+    if (base < 2 || base > 36) {
+        printf("Ошибка: основание должно быть от 2 до 36.\n");
         return 1;
     }
 

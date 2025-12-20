@@ -3,21 +3,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <limits.h>
 
 #define MAX_BASE 36
 #define MAX_TOKEN_LEN 256
 
+typedef enum {
+    SUCCESS = 0,
+    INCORRECT_INPUT,
+    INCORRECT_BASE
+} BadType;
 
-// Преобразует символ (0-9, A-Z) в его численное значение (0-35).
 int char_to_value(char c);
-
-// Находит минимальное основание системы счисления для заданной строки.
 int find_min_base(const char *s);
-
-// Переводит число из заданного основания в десятичное (long long).
 long long convert_to_decimal(const char *s, int base);
-
-// Нормализует строку: переводит в верхний регистр и удаляет ведущие нули.
 void normalize_number(const char *input_s, char *output_s);
 
 #endif

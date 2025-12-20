@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "lab7.h"
 
 int main(int argc, char *argv[]) {
@@ -24,25 +25,30 @@ int main(int argc, char *argv[]) {
     int min_base;
     long long decimal_value;
 
-    while (fscanf(fin, "%s", token) == 1) {
+    while (fscanf(fin, "%255s", token) == 1) {
         normalize_number(token, normalized_token);
 
         if (normalized_token[0] == '\0') {
             continue;
         }
 
+        if (normalized_token[0] == '0' && normalized_token[1] == '\0') {
+            fprintf(fout, "0 2 0\n");
+            continue;
+        }
+
         min_base = find_min_base(normalized_token);
 
         if (min_base == -1) {
-            fprintf(stderr, "Предупреждение: Пропущено некорректное число: %s\n", normalized_token);
+            fprintf(stderr, "Предупреждение: Пропущено некорректное число: %s\n", token);
             continue; 
         }
         
         decimal_value = convert_to_decimal(normalized_token, min_base);
 
         if (decimal_value == -1) {
-             fprintf(stderr, "Предупреждение: Пропущено число из-за потенциального переполнения: %s\n", normalized_token);
-             continue;
+            fprintf(stderr, "Предупреждение: Пропущено число из-за потенциального переполнения: %s\n", token);
+            continue;
         }
 
         fprintf(fout, "%s %d %lld\n", normalized_token, min_base, decimal_value);

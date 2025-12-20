@@ -18,3 +18,4 @@ void process_d_flag(FILE *input, FILE *output);
 void process_i_flag(FILE *input, FILE *output);
 void process_s_flag(FILE *input, FILE *output);
 void process_a_flag(FILE *input, FILE *output);
+int are_same_file(const char* file1, const char* file2);

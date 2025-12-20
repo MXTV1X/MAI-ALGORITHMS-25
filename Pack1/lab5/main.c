@@ -47,6 +47,13 @@ int main(int argc, char *argv[]) {
         fclose(input);
         return OPEN_ERR;
     }
+
+
+    if (are_same_file(input_filename, output_filename)) {
+        fprintf(stderr, "Ошибка: входной и выходной файл - один и тот же файл\n");
+        fprintf(stderr, "Это приведет к потере исходных данных!\n");
+        return BAD_INP;
+    }
     
     char operation = flag[1];
     
